@@ -1,6 +1,7 @@
 <launch>
   <!-- Publicar el modelo URDF generado desde Xacro -->
-  <param name="robot_description" command="$(find xacro)/xacro $(find tu_paquete)/robot.urdf.xacro"/>
+  <param name="robot_description" command="$(find xacro)/xacro $(find hoverboard_driver)/xacro/robot.urdf.xacro"/>
+
 
   <!-- Publicar las transformaciones -->
   <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher"/>

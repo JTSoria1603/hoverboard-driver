@@ -1,0 +1,80 @@
+Panels:
+  - Class: rviz/DisplaysPanel
+    Name: Displays
+  - Class: rviz/ViewsPanel
+    Name: Views
+    Property Tree:
+      Expanded:
+        - /Global Options
+      Splitter Ratio: 0.5
+  - Class: rviz/TimePanel
+    Name: Time
+Visualization Manager:
+  Class: ""
+  Displays:
+    - Class: rviz/Grid
+      Enabled: true
+      Name: Grid
+      Alpha: 0.5
+      Color:
+        A: 1.0
+        B: 1.0
+        G: 1.0
+        R: 1.0
+      Plane Cell Count: 10
+      Plane Cell Size: 1.0
+      Reference Frame: base_link
+    - Class: rviz/Map
+      Enabled: true
+      Name: Map
+      Topic: /map
+      Alpha: 0.7
+      Draw Behind: false
+      Resolution: 0
+      Use Timestamp: false
+    - Class: rviz/LaserScan
+      Enabled: true
+      Name: LaserScan
+      Topic: /scan
+      Alpha: 1.0
+      Color Transformer: Intensity
+      Decay Time: 0.0
+      Queue Size: 10
+  Global Options:
+    Background Color:
+      A: 1.0
+      B: 0.0
+      G: 0.0
+      R: 0.0
+    Fixed Frame: map
+  Name: root
+  Tools:
+    - Class: rviz/Interact
+      Hide Inactive: true
+    - Class: rviz/MoveCamera
+    - Class: rviz/Select
+    - Class: rviz/FocusCamera
+    - Class: rviz/Measure
+    - Class: rviz/SetInitialPose
+    - Class: rviz/SetGoal
+  Views:
+    Current:
+      Class: rviz/Orbit
+      Distance: 10
+      Focal Point:
+        X: 0.0
+        Y: 0.0
+        Z: 0.0
+      Pitch: 1.0
+      Target Frame: map
+      Yaw: 1.0
+    Saved:
+      - Class: rviz/Orbit
+        Distance: 10
+        Focal Point:
+          X: 0.0
+          Y: 0.0
+          Z: 0.0
+        Pitch: 1.0
+        Target Frame: map
+        Yaw: 1.0
