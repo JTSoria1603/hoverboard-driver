@@ -1,0 +1,158 @@
+<?xml version="1.0"?>
+
+<robot name="robot_mecatronica" xmlns:xacro="http://ros.org/wiki/xacro">
+
+
+ 
+  <!-- Include Colors Materials -->
+  <material name="red">
+    <color rgba="1 0 0 1"/> <!-- Rojo (RGB), opacidad 1 -->
+  </material>
+  
+  <material name="black">
+    <color rgba="0 0 0 1"/> <!-- Negro -->
+  </material>
+  
+  <material name="blue">
+    <color rgba="0 0 1 1"/> <!-- Azul -->
+  </material>
+  <!-- Include Robot Description -->
+  <link name="base_footprint"/>
+  
+  <link name="base_link">
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <box size="0.4 0.35 0.35"/> <!-- Dimensiones del chasis -->
+      </geometry>
+      <material name="red"/>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <box size="0.4 0.35 0.35"/>
+      </geometry>
+    </collision>
+  </link>
+
+  <joint name="base_joint" type="fixed">
+    <parent link="base_footprint"/>
+    <child link="base_link" />
+    <origin xyz="0 0 0.08" rpy="0 0 0"/>
+  </joint>
+
+  <link name="wheel_right_link">
+    <visual>
+      <origin xyz="0 0 0" rpy="1.57 0 0" />
+      <geometry>
+        <cylinder length="0.05" radius="0.0825"/> <!-- Dimensiones de la rueda -->
+      </geometry>
+      <material name="black"/>
+    </visual>
+    <collision>
+    <origin xyz="-0.15 -0.16 -0.18" rpy="0 0 0"/> <!-- Ajusta estos valores -->
+      <geometry>
+        <cylinder length="0.05" radius="0.0825"/>
+      </geometry>
+    </collision>
+  </link>
+
+  <joint name="wheel_right_joint" type="continuous">
+    <parent link="base_link"/>
+    <child link="wheel_right_link"/>
+    <origin xyz="-0.15 0.16 -0.18" rpy="0 0 0"/> <!-- Ajusta estos valores -->
+    <axis xyz="0 1 0"/>
+  </joint>
+  
+  <link name="wheel_left_link">
+    <visual>
+      <origin xyz="0 0 0" rpy="-1.57 0 0" />
+      <geometry>
+        <cylinder length="0.05" radius="0.0825"/> <!-- Dimensiones de la rueda -->
+      </geometry>
+      <material name="black"/>
+    </visual>
+    <collision>
+      <origin xyz="0 0.015 0" rpy="-1.57 0 0" />
+      <geometry>
+        <cylinder length="0.05" radius="0.0825"/>
+      </geometry>
+    </collision>
+  </link>
+
+  <joint name="wheel_left_joint" type="continuous">
+    <parent link="base_link"/>
+    <child link="wheel_left_link"/>
+    <origin xyz="-0.15 -0.16 -0.18" rpy="0 0 0"/> <!-- Ajusta estos valores -->
+    <axis xyz="0 1 0"/>
+  </joint>
+
+  <link name="lidar_link">
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/> <!-- Sin cambios aquí -->
+      <geometry>
+        <cylinder length="0.05" radius="0.04"/> <!-- Dimensiones del LiDAR -->
+      </geometry>
+      <material name="blue"/> <!-- Color azul para el LiDAR -->
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0"/> <!-- Sin cambios aquí -->
+      <geometry>
+        <cylinder length="0.05" radius="0.04"/>
+      </geometry>
+    </collision>
+  </link>
+  
+  <joint name="lidar_joint" type="fixed">
+    <parent link="base_link"/>
+    <child link="lidar_link"/>
+    <origin xyz="0.2 0 0.175" rpy="0 0 0"/> <!-- Centrado en el eje Y -->
+  </joint>
+
+  <!-- Rueda guía izquierda -->
+<link name="front_left_guide_wheel">
+  <visual>
+    <origin xyz="0 0 0" rpy="-1.57 0 0"/> <!-- Ajusta la posición -->
+    <geometry>
+      <cylinder length="0.02" radius="0.025"/> <!-- Dimensiones de la rueda -->
+    </geometry>
+    <material name="black"/>
+  </visual>
+  <collision>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <geometry>
+      <cylinder length="0.02" radius="0.025"/>
+    </geometry>
+  </collision>
+</link>
+
+<joint name="front_left_guide_wheel_joint" type="fixed">
+  <parent link="base_link"/>
+  <child link="front_left_guide_wheel"/>
+  <origin xyz="0.15 -0.075 -0.18" rpy="0 0 0"/>
+</joint>
+
+<!-- Rueda guía derecha -->
+<link name="front_right_guide_wheel">
+  <visual>
+    <origin xyz="0 0 0" rpy="-1.57 0 0"/> <!-- Ajusta la posición -->
+    <geometry>
+      <cylinder length="0.02" radius="0.025"/> <!-- Dimensiones de la rueda -->
+    </geometry>
+    <material name="black"/>
+  </visual>
+  <collision>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <geometry>
+      <cylinder length="0.02" radius="0.025"/>
+    </geometry>
+  </collision>
+</link>
+
+<joint name="front_right_guide_wheel_joint" type="fixed">
+  <parent link="base_link"/>
+  <child link="front_right_guide_wheel"/>
+  <origin xyz="0.15 0.075 -0.18" rpy="0 0 0"/>
+</joint>
+
+</robot>

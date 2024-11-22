@@ -1,0 +1,17 @@
+<launch>
+  <!-- Lanzar el modelo del robot -->
+<include file="$(find hoverboard_driver)/launch/robot.launch"/>
+
+
+  <!-- Nodo de Hector Mapping -->
+  <node pkg="hector_mapping" type="hector_mapping" name="hector_mapping" output="screen">
+    <param name="odom_frame" value="odom"/> <!-- Marco de odometría -->
+    <param name="base_frame" value="base_link"/> <!-- Marco base del robot -->
+    <param name="map_frame" value="map"/> <!-- Marco del mapa -->
+    <remap from="/scan" to="/scan"/> <!-- Asegúrate de que tu LiDAR publica en este topic -->
+    <remap from="/odom" to="/hoverboard_velocity_controller/odom"/> <!-- Odometría -->
+  </node>
+
+  <!-- Nodo TF Static para publicar transformaciones iniciales -->
+  <node pkg="tf2_ros" type="static_transform_publisher" name="static_tf_pub" args="0 0 0 0 0 0 map odom"/>
+</launch>

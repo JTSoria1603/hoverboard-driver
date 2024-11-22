@@ -1,0 +1,10 @@
+<launch>
+  <!-- Publicar el modelo URDF generado desde Xacro -->
+  <param name="robot_description" command="$(find xacro)/xacro $(find tu_paquete)/robot.urdf.xacro"/>
+
+  <!-- Publicar las transformaciones -->
+  <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher"/>
+
+  <!-- Publicar transformaciones estáticas para base_link -->
+  <node pkg="tf2_ros" type="static_transform_publisher" name="base_to_laser" args="0.2 0 0.175 0 0 0 base_link lidar_link" />
+</launch>
