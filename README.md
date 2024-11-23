@@ -1,37 +1,111 @@
-# hoverboard-driver
-![main workflow](https://github.com/alex-makarov/hoverboard-driver/actions/workflows/main.yml/badge.svg)
 
-ROS hardware driver for UART-controlled hoverboard. Can be used with [diff_drive_controller](http://wiki.ros.org/diff_drive_controller). Hoverboard is using modified [firmware](https://github.com/alex-makarov/hoverboard-firmware-hack-FOC) by [Emanuel Feru](https://github.com/EmanuelFeru), changed to report wheel odometry via serial protocol.
+# Hoverboard Driver - Explanation in English
 
-If you're looking for the version of Hoverboard driver for 
- [bipropellant firmware](https://github.com/bipropellant/bipropellant-hoverboard-firmware), check the respective branch.
+This file describes the main functions, configurations, and additional elements included in the `hoverboard-driver` package.
 
-This driver is built for [Robaka](https://github.com/alex-makarov/robaka-ros), a prototyping robotic platform based on hoverboard, Jetson Nano and a bunch of sensors. Please use Github discussion to get in touch.
+---
 
-# ROS2
-Looking for a ROS2 driver? Have a look at humble branch. https://github.com/hoverboard-robotics/hoverboard-driver/tree/humble
+## **1. Launch Files (`launch`)**
 
-## Usage
+The following launch files have been added:
 
-1. Hoverboard port can be set as a "port" parameter in the node namespace. Check `hoverboard.launch` and `4x4.launch` for examples of 2WD and 4WD configurations. 4WD config is purely for illustration on how to use several ports, but was **not** tested with two hoverboards.
-2. `roslaunch hoverboard_driver hoverboard.launch`
-3. Use any tool (keyboard_teleop, rqt) to send speed commands to `hoverboard_velocity_controller/cmd_vel`.
+### **`map.launch`**
+This file runs the Hector Mapping node to generate real-time maps using LiDAR data and the robot's odometry. It also includes configuration to automatically open RViz with relevant topics.
 
-In 4x4 configuration, if you want to control both axis with the same `cmd_vel`, you can apply remapping as following:
-```xml
-<launch>
-    <group ns="front">
-        <param name="port" type="str" value="/dev/ttyTHS1"/>
-        <remap from="/front/hoverboard_velocity_controller/cmd_vel" to="/cmd_vel"/>
-        <include file="$(find hoverboard_driver)/launch/hoverboard.launch" />
-    </group>
-    <group ns="rear">
-        <param name="port" type="str" value="/dev/ttyTHS2"/>
-        <remap from="/rear/hoverboard_velocity_controller/cmd_vel" to="/cmd_vel"/>
-        <include file="$(find hoverboard_driver)/launch/hoverboard.launch" />
-    </group>
-</launch>
+- **Components launched:**
+  - **Hector Mapping:** SLAM node to generate maps.
+  - **RViz:** Visualization tool to view the map and LiDAR data.
+  - **Transformations:** Static publishers to connect `base_link` with the LiDAR.
+
+- **Usage Instructions:**
+  Run the file with the following command:
+  ```bash
+  roslaunch hoverboard_driver map.launch
+  ```
+
+  This will open Hector Mapping and RViz automatically.
+
+---
+
+## **2. Required Libraries**
+
+To use this package, make sure the following libraries and dependencies are installed:
+
+### **ROS Dependencies**
+- `hector_mapping`: Installation:
+  ```bash
+  sudo apt-get install ros-noetic-hector-mapping
+  ```
+- `rviz`: Installation:
+  ```bash
+  sudo apt-get install ros-noetic-rviz
+  ```
+- `joint_state_controller`: Installation:
+  ```bash
+  sudo apt-get install ros-noetic-joint-state-controller
+  ```
+- `diff_drive_controller`: Installation:
+  ```bash
+  sudo apt-get install ros-noetic-diff-drive-controller
+  ```
+- `robot_state_publisher`: Installation:
+  ```bash
+  sudo apt-get install ros-noetic-robot-state-publisher
+  ```
+
+### **Additional Dependencies**
+- `xacro`: Installation:
+  ```bash
+  sudo apt-get install ros-noetic-xacro
+  ```
+
+---
+
+## **3. Xacro Model**
+
+The Xacro model defines the robot's physical structure, including:
+- Chassis.
+- Driving wheels (`left_wheel` and `right_wheel`).
+- LiDAR (`laser`).
+
+![Modelo Xacro](modelo_xacro.jpg)
+
+
+### **File Location:**
+The Xacro model file is located at:
+```bash
+hoverboard_driver/xacro/robot.urdf.xacro
 ```
 
-## DISCLAIMER
-I bear **no responsibility** for any damage, direct or indirect, caused by using this project. Hoverboards are powerful and can be dangerous! Make sure you take all safety precautions!
+### **Main sections of the model:**
+
+1. **Chassis (`base_link`):**
+   - Defines the robot's main base.
+   - Includes dimensions and visual material.
+
+2. **Driving wheels (`left_wheel` and `right_wheel`):**
+   - Essential for odometry and differential control.
+   - Configured as `continuous` joints for continuous rotational movement.
+
+3. **LiDAR (`laser`):**
+   - Mounted to the `base_link` frame via a fixed joint.
+   - Publishes data on the `/scan` topic.
+
+### **Visualizing in RViz:**
+You can visualize the physical model using RViz. Run the following command to load just the model:
+```bash
+roslaunch hoverboard_driver robot.launch
+```
+
+---
+
+## **4. Additional Notes**
+
+- This project has been extended to include mapping functionality with Hector Mapping.
+- RViz is automatically configured when running the `map.launch` file.
+- Ensure you check the robot's transformations using `rqt_tf_tree`:
+  ```bash
+  rosrun rqt_tf_tree rqt_tf_tree
+  ```
+
+If you encounter any issues or need further assistance, feel free to ask. 😊
