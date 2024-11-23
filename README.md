@@ -1,5 +1,5 @@
 
-# Hoverboard Driver - Explanation in English
+# Hoverboard Driver
 
 This file describes the main functions, configurations, and additional elements included in the `hoverboard-driver` package.
 

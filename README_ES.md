@@ -1,5 +1,5 @@
 
-# Hoverboard Driver - Explicación en Español
+# Hoverboard Driver
 
 Este archivo describe las funciones principales, configuraciones y elementos añadidos al paquete `hoverboard-driver`.
 
